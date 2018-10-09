@@ -5,14 +5,14 @@ import { makeExecutableSchema } from 'graphql-tools';
 import cors from 'cors'
 import { MongoClient, ObjectId } from 'mongodb';
 import { prepare } from './utils';
-
+const { DB_USERNAME, DB_PASSWORD, DB_ML_USER, PORT } = process.env;
 // connecting to mongoDB
-const MONGO_URL = 'mongodb://kjsf_8875:kjlb75jkfbo@ds243931.mlab.com:43931/dads-app-db';
+const MONGO_URL = `mongodb://${DB_USERNAME}:${DB_PASSWORD}@ds243931.mlab.com:43931/${DB_ML_USER}`;
 
 // express setup localhost
 const homePath = '/graphiql'
 const URL = 'http://localhost'
-const PORT = process.env.PORT || 5000;
+const devPORT = PORT || 5000;
 const app = express();
 app.use(cors());
 
@@ -116,7 +116,7 @@ export const start = async () => {
         }))
 
         app.listen(PORT, () => {
-            console.log(`Visit ${URL}:${PORT}${homePath}`)
+            console.log(`Visit ${URL}:${devPORT}${homePath}`)
         })
 
     } catch(err) {
