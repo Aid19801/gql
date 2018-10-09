@@ -5,14 +5,14 @@ import { makeExecutableSchema } from 'graphql-tools';
 import cors from 'cors'
 import { MongoClient, ObjectId } from 'mongodb';
 import { prepare } from './utils';
-const { DB_USERNAME, DB_PASSWORD, DB_ML_USER, PORT } = process.env;
+const { DB_USERNAME, DB_PASSWORD, DB_ML_USER } = process.env;
 // connecting to mongoDB
 const MONGO_URL = `mongodb://${DB_USERNAME}:${DB_PASSWORD}@ds243931.mlab.com:43931/${DB_ML_USER}`;
 
 // express setup localhost
 const homePath = '/graphiql'
 const URL = 'http://localhost'
-const devPORT = PORT || 5000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
 
@@ -78,7 +78,9 @@ export const start = async () => {
                     return prepare(await MessagesCollection.findOne(ObjectId(_id)));
                 },
                 messages: async () => {
-                    return (MessagesCollection.find({}).toArray()).map(prepare);
+                    let x = await (MessagesCollection.find().toArray());
+                    console.log('x is ===> ', x);
+                    return x; // (MessagesCollection.find({}).toArray()).map(prepare);
                 },
                 user: async () => {
                     return prepare(await UsersCollection.findOne(ObjectId(_id)));
@@ -116,7 +118,7 @@ export const start = async () => {
         }))
 
         app.listen(PORT, () => {
-            console.log(`Visit ${URL}:${devPORT}${homePath}`)
+            console.log(`Visit ${URL}:${PORT}${homePath}`)
         })
 
     } catch(err) {
