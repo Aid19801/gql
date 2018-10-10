@@ -37,14 +37,12 @@ export const start = async () => {
                 message: String
                 timestamp: String
                 userName: String
-                userId: String
             }
 
             type User {
                 _id: String
                 email: String
                 userName: String
-                userId: String
                 password: String
                 likes: String
                 dislikes: String
@@ -74,19 +72,17 @@ export const start = async () => {
 
         const resolvers = {
             Query: {
-                message: async (root, {_id}) => {
-                    return prepare(await MessagesCollection.findOne(ObjectId(_id)));
-                },
                 messages: async () => {
-                    let x = await (MessagesCollection.find().toArray());
-                    console.log('x is ===> ', x);
-                    return x; // (MessagesCollection.find({}).toArray()).map(prepare);
-                },
-                user: async () => {
-                    return prepare(await UsersCollection.findOne(ObjectId(_id)));
+                    return await MessagesCollection.find().toArray();
                 },
                 users: async () => {
-                    return (UsersCollection.find({}).toArray()).map(prepare);
+                    return await UsersCollection.find().toArray();
+                },
+                user: async (root, { _id} ) => {
+                    return prepare(await UsersCollection.findOne(ObjectId(_id)));
+                },
+                message: async (root, {_id}) => {
+                    return prepare(await MessagesCollection.findOne(ObjectId(_id)));
                 }
             },
             User: {
@@ -99,7 +95,7 @@ export const start = async () => {
                     const res = await MessagesCollection.insertOne(args);
                     return prepare(res.ops[0]);
                 },
-                createUser: async () => {
+                createUser: async (root, args, context, info) => {
                     const res = await UsersCollection.insertOne(args);
                     return prepare(res.ops[0]);
                 }
