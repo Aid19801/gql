@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-polyfill": "^6.26.0",
     "nodemon": "^1.18.4",
     "babel-core": "^6.20.0",
     "babel-plugin-syntax-async-functions": "^6.13.0",

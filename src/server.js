@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import 'babel-polyfill';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import cors from 'cors'

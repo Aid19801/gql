@@ -13,6 +13,8 @@ var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
+require('babel-polyfill');
+
 var _graphqlServerExpress = require('graphql-server-express');
 
 var _graphqlTools = require('graphql-tools');
