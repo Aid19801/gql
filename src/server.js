@@ -74,15 +74,19 @@ export const start = async () => {
         const resolvers = {
             Query: {
                 messages: async () => {
+                    console.log('Messages Query Fired');
                     return await MessagesCollection.find().toArray();
                 },
                 users: async () => {
+                    console.log('Users Query Fired');
                     return await UsersCollection.find().toArray();
                 },
                 user: async (root, { _id} ) => {
+                    console.log('User Query Fired');
                     return prepare(await UsersCollection.findOne(ObjectId(_id)));
                 },
                 message: async (root, {_id}) => {
+                    console.log('Message Query Fired');
                     return prepare(await MessagesCollection.findOne(ObjectId(_id)));
                 }
             },
@@ -108,9 +112,15 @@ export const start = async () => {
             resolvers
         });
 
-        app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+        // app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
 
-        app.use(homePath, graphiqlExpress({
+        // app.use(homePath, graphiqlExpress({
+        //     endpointURL: '/graphql'
+        // }))
+
+        app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }))
+        
+        app.use('/graphiql', graphiqlExpress({
             endpointURL: '/graphql'
         }))
 
